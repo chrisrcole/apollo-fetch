@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { LinkForm } from "./LinkForm";
-import { LinkList } from "./LinkList";
+import { LinkForm } from "./components/LinkForm";
+import { LinkList } from "./components/LinkList";
 
 function App(props) {
   const [apollos, setApollos] = useState(props.apollos);
