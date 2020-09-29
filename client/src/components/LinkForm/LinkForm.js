@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { validURL } from "../../services";
+
 export const LinkForm = (props) => {
   const { apollos, setApollos } = props;
 
@@ -12,7 +14,7 @@ export const LinkForm = (props) => {
 
   const addLink = (event) => {
     event.preventDefault();
-    if (link) {
+    if (link && validURL(link)) {
       const linkObject = {
         id: Math.random() * 100,
         inputUrl: link,
@@ -21,7 +23,7 @@ export const LinkForm = (props) => {
       setApollos(apollos.concat(linkObject));
       setLink("");
     } else {
-      console.log("No URL entered");
+      console.log({ error: "Please input a proper URL", input: link });
     }
   };
   return (
