@@ -15,13 +15,11 @@ export const LinkList = (props) => {
             <tr key={apollo.id}>
               <td>{apollo.inputUrl}</td>
               <td>{apollo.shortUrl}</td>
-              <td>{apollo.createDate}</td>
+              <td>{apollo.createDate.toString()}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      <br></br>
-      {JSON.stringify(apollos)}
     </>
   );
 };

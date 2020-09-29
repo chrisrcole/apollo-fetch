@@ -18,8 +18,10 @@ export const LinkForm = (props) => {
       const linkObject = {
         id: Math.random() * 100,
         inputUrl: link,
+        shortUrl: link,
         createDate: new Date(),
       };
+      console.log(linkObject);
       setApollos(apollos.concat(linkObject));
       setLink("https://www.google.com");
     } else {
