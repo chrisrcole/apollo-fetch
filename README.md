@@ -1,2 +1,3 @@
 # apollo
- Apollo is a url shortener that allows users to share tiny links.
+
+Apollo is a url shortener that allows users to share tiny links.
