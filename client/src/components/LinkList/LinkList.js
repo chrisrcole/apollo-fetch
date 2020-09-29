@@ -1,12 +1,27 @@
-import React, { useLayoutEffect } from "react";
+import React from "react";
 
 export const LinkList = (props) => {
   const { apollos } = props;
   return (
-    <ul>
-      {apollos.map((link) => (
-        <li key={link.id}>{link.inputUrl}</li>
-      ))}
-    </ul>
+    <>
+      <table>
+        <tbody>
+          <tr>
+            <th>Link</th>
+            <th>Shortened</th>
+            <th>Created</th>
+          </tr>
+          {apollos.map((apollo) => (
+            <tr key={apollo.id}>
+              <td>{apollo.inputUrl}</td>
+              <td>{apollo.shortUrl}</td>
+              <td>{apollo.createDate}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <br></br>
+      {JSON.stringify(apollos)}
+    </>
   );
 };

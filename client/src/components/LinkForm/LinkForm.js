@@ -5,7 +5,7 @@ import { validURL } from "../../services";
 export const LinkForm = (props) => {
   const { apollos, setApollos } = props;
 
-  const [link, setLink] = useState("");
+  const [link, setLink] = useState("https://www.google.com");
 
   const handleChange = (event) => {
     console.log(link);
@@ -21,7 +21,7 @@ export const LinkForm = (props) => {
         createDate: new Date(),
       };
       setApollos(apollos.concat(linkObject));
-      setLink("");
+      setLink("https://www.google.com");
     } else {
       console.log({ error: "Please input a proper URL", input: link });
     }
