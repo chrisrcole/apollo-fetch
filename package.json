@@ -9,16 +9,16 @@
   "author": "Chris Cole",
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm run build:client",
-    "build": "npm run build-ts",
+    "postinstall": "cd client && yarn && yarn build --prod",
+    "build": "yarn build-ts",
     "build-ts": "tsc",
-    "build:client": "cd client && npm run build --prod",
+    "build:client": "cd client && yarn build --prod",
     "deploy": "git push heroku main",
     "logs:prod": "heroku logs --tail",
     "dev-server": "nodemon server/server.ts",
-    "dev": "concurrently -k -p \"[{name}]\" -n \"Server,Client\" -c \"green.bold,cyan.bold\" \"npm run dev-server\" \"cd client && npm run start\"",
-    "serve": "npm run build && node dist/server.js",
-    "start": "npm run serve"
+    "dev": "concurrently -k -p \"[{name}]\" -n \"Server,Client\" -c \"green.bold,cyan.bold\" \"yarn dev-server\" \"cd client && yarn start\"",
+    "serve": "yarn build && node dist/server.js",
+    "start": "yarn serve"
   },
   "dependencies": {
     "bluebird": "^3.7.2",
