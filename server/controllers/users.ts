@@ -52,22 +52,20 @@ usersRouter.post(
 
     user
       .save()
-      .then((savedUser) => savedUser.toJSON())
-      .then((savedAndFormattedUser) => {
+      .then((user) => {
         const payload = {
           user: {
-            id: savedAndFormattedUser.id,
+            email: user.email,
+            id: user._id,
           },
         };
-        jwt.sign(
-          payload,
-          SESSION_SECRET,
-          { expiresIn: "5 days" },
-          (err, token) => {
-            if (err) throw err;
-            response.json({ token });
-          }
-        );
+        const token = jwt.sign(payload, SESSION_SECRET);
+
+        response.status(200).send({
+          token,
+          email: user.email,
+          name: user.name,
+        });
       })
       .catch((error) => {
         response

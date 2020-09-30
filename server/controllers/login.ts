@@ -10,31 +10,27 @@ const loginRouter = express.Router();
 loginRouter.post("/", async (request, response) => {
   const { email, password } = request.body;
 
-  models.User.findOne({ email: email })
-    .then((user) => user.toJSON())
-    .then(async (formattedUser) => {
-      const passwordCorrect =
-        formattedUser === null
-          ? false
-          : await bcrypt.compare(password, formattedUser.password);
+  models.User.findOne({ email: email }).then(async (user) => {
+    const passwordCorrect =
+      user === null ? false : await bcrypt.compare(password, user.password);
 
-      if (!(formattedUser && passwordCorrect)) {
-        return response.status(401).json({
-          error: "invalid username or password",
-        });
-      }
+    if (!(user && passwordCorrect)) {
+      return response.status(401).json({
+        error: "invalid username or password",
+      });
+    }
 
-      const userForToken = {
-        email: formattedUser.email,
-        id: formattedUser._id,
-      };
+    const payload = {
+      user: {
+        email: user.email,
+        id: user._id,
+      },
+    };
 
-      const token = jwt.sign(userForToken, SESSION_SECRET);
+    const token = jwt.sign(payload, SESSION_SECRET);
 
-      response
-        .status(200)
-        .send({ token, email: formattedUser.email, name: formattedUser.name });
-    });
+    response.status(200).send({ token, email: user.email, name: user.name });
+  });
 });
 
 export { loginRouter };
