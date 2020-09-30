@@ -41,7 +41,7 @@ app.use(
   })
 );
 
-app.get("/", (request, response) => {
+app.get("/api/apollos", (request, response) => {
   Apollo.find({}).then((apollos) => {
     response.json(apollos.map((apollo) => apollo.toJSON()));
   });

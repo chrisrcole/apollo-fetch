@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "/";
+const baseUrl = "/api/apollos";
 
 const getAll = async () => {
   const request = axios.get(baseUrl);
