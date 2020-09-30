@@ -3,10 +3,11 @@ import compression from "compression"; // compresses requests
 import session from "express-session";
 import bodyParser from "body-parser";
 import mongo from "connect-mongo";
-import mongoose from "mongoose";
-import bluebird from "bluebird";
+import cors from "cors";
 import path from "path";
 import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
+
+import { shortenLink } from "./services";
 
 const MongoStore = mongo(session);
 
@@ -15,26 +16,11 @@ const app = express();
 
 // Connect to MongoDB
 const mongoUrl = MONGODB_URI;
-mongoose.Promise = bluebird;
-
-mongoose
-  .connect(mongoUrl, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
-  })
-  .catch((err) => {
-    console.log(
-      `MongoDB connection error. Please make sure MongoDB is running. ${err}`
-    );
-    // process.exit();
-  });
+import Apollo from "./models/apollo";
 
 // Express configuration
 app.set("port", process.env.PORT || 5000);
+app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -55,6 +41,29 @@ app.use(
   })
 );
 
-console.log(__dirname);
+app.get("/", (request, response) => {
+  Apollo.find({}).then((apollos) => {
+    response.json(apollos.map((apollo) => apollo.toJSON()));
+  });
+});
+app.post("/", (request, response, next) => {
+  const body = request.body;
+  if (!body.inputUrl) {
+    response.status(400).json({ error: "url missing" });
+  } else {
+    const apollo = new Apollo({
+      inputUrl: body.inputUrl,
+      shortUrl: shortenLink(body.inputUrl),
+      createDate: new Date(),
+    });
+    apollo
+      .save()
+      .then((savedApollo) => savedApollo.toJSON())
+      .then((savedAndFormattedApollo) => {
+        response.json(savedAndFormattedApollo);
+      })
+      .catch((error) => next(error));
+  }
+});
 
 export default app;
