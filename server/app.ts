@@ -50,7 +50,7 @@ app.get("/api/apollos", (request, response) => {
     response.json(apollos.map((apollo) => apollo.toJSON()));
   });
 });
-app.post("/", (request, response, next) => {
+app.post("/api/apollos", (request, response, next) => {
   const body = request.body;
   if (!body.inputUrl) {
     response.status(400).json({ error: "url missing" });

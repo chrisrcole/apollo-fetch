@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { validURL } from "../../services";
+import apolloService from "../../services/apollo";
 
 export const LinkForm = (props) => {
   const { apollos, setApollos } = props;
@@ -15,15 +16,18 @@ export const LinkForm = (props) => {
   const addLink = (event) => {
     event.preventDefault();
     if (link && validURL(link)) {
-      const linkObject = {
-        id: Math.random() * 100,
+      const apolloObject = {
         inputUrl: link,
-        shortUrl: link,
-        createDate: new Date(),
       };
-      console.log(linkObject);
-      setApollos(apollos.concat(linkObject));
-      setLink("https://www.google.com");
+      apolloService
+        .create(apolloObject)
+        .then((returnedApollo) => {
+          setApollos(apollos.concat(returnedApollo));
+        })
+        .catch((error) => {
+          console.log(error.response.data.error);
+        });
+      setLink("");
     } else {
       console.log({ error: "Please input a proper URL", input: link });
     }
