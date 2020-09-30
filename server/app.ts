@@ -10,6 +10,7 @@ import morgan from "morgan";
 
 import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 
+import models from "./models";
 import controllers from "./controllers";
 
 const MongoStore = mongo(session);
@@ -37,7 +38,6 @@ mongoose
     );
     // process.exit();
   });
-import models from "./models";
 
 // Express configuration
 app.set("port", process.env.PORT || 5000);
@@ -70,6 +70,7 @@ app.get("/", (request, response, next) => {
 
 app.use("/api/users", controllers.usersRouter);
 app.use("/api/apollos", controllers.apollosRouter);
+app.use("/api/login", controllers.loginRouter);
 
 app.get("/:id", (request, response, next) => {
   models.Apollos.findOne({ id: request.params.id })

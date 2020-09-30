@@ -5,13 +5,13 @@ import { nanoid, shortenLink } from "../services";
 
 const apollosRouter = express.Router();
 
-apollosRouter.get("/", (request, response) => {
+apollosRouter.get("/", async (request, response) => {
   models.Apollos.find({}).then((apollos) => {
     response.json(apollos.map((apollo) => apollo.toJSON()));
   });
 });
 
-apollosRouter.post("/", (request, response, next) => {
+apollosRouter.post("/", async (request, response, next) => {
   const body = request.body;
   const base = request.protocol + "://" + request.get("host");
   if (!body.inputUrl) {

@@ -1,4 +1,4 @@
-import { Apollos } from "./apollos";
-import { User } from "./user";
+import { Apollos } from "./Apollos";
+import { User } from "./User";
 
 export default { Apollos, User };

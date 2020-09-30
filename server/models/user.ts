@@ -2,18 +2,25 @@ import mongoose from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
 const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
     unique: true,
   },
-  name: {
+  password: {
     type: String,
     required: true,
   },
-  passwordHash: {
+  avatar: {
     type: String,
-    required: true,
+  },
+  createDate: {
+    type: Date,
+    default: Date.now,
   },
   apollos: [
     {
@@ -23,15 +30,6 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-userSchema.set("toJSON", {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString();
-    delete returnedObject._id;
-    delete returnedObject.__v;
-    // the passwordHash should not be revealed
-    delete returnedObject.passwordHash;
-  },
-});
 userSchema.plugin(uniqueValidator);
 
 export const User = mongoose.model("User", userSchema);
