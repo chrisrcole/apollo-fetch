@@ -39,8 +39,9 @@ app.use(
     }),
   })
 );
+console.log(path.join(__dirname, "/build"));
 app.use(
-  express.static(path.join(__dirname, "../client/build"), {
+  express.static("build", {
     maxAge: 31557600000,
   })
 );
