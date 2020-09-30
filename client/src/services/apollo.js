@@ -1,8 +1,18 @@
 import axios from "axios";
 const baseUrl = "/api/apollos";
 
+let token = null;
+
+const setToken = (newToken) => {
+  token = `bearer ${newToken}`;
+};
+
 const getAll = async () => {
-  const request = axios.get(baseUrl);
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const request = axios.get(baseUrl, config);
   const response = await request;
   return response.data;
 };
@@ -14,8 +24,10 @@ const get = async (id) => {
 };
 
 const create = async (newObject) => {
-  const request = axios.post(baseUrl, newObject);
-  const response = await request;
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.post(baseUrl, newObject, config);
   return response.data;
 };
 const remove = async (id) => {
@@ -35,4 +47,5 @@ export default {
   create,
   update,
   remove,
+  setToken,
 };

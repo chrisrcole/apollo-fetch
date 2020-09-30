@@ -17,9 +17,20 @@ const getTokenFrom = (request: any) => {
 };
 
 apollosRouter.get("/", async (request, response) => {
-  models.Apollos.find({}).then((apollos) => {
-    response.json(apollos.map((apollo) => apollo.toJSON()));
-  });
+  const token = getTokenFrom(request);
+  if (!token) {
+    await models.Apollos.find({ user: null }).then((apollos) => {
+      return response.json(apollos.map((apollo) => apollo.toJSON()));
+    });
+  } else {
+    const decodedToken: any = jwt.verify(token, SESSION_SECRET).valueOf();
+
+    await models.Apollos.find({
+      $or: [{ user: decodedToken.user.id }, { user: null }],
+    }).then((apollos) => {
+      response.json(apollos.map((apollo) => apollo.toJSON()));
+    });
+  }
 });
 
 apollosRouter.post("/", async (request, response, next) => {
@@ -27,15 +38,9 @@ apollosRouter.post("/", async (request, response, next) => {
   const base = request.protocol + "://" + request.get("host");
 
   const token = getTokenFrom(request);
-  const decodedToken: any = jwt.verify(token, SESSION_SECRET).valueOf();
-  console.log(decodedToken.user.id);
-  if (!token || !decodedToken.user.id) {
-    return response.status(401).json({ error: "token missing or invalid" });
-  }
-
-  models.User.findById(decodedToken.user.id).then((user) => {
+  if (!token) {
     if (!body.inputUrl) {
-      response.status(400).json({ error: "url missing" });
+      return response.status(400).json({ error: "url missing" });
     } else {
       const id = nanoid(5);
       const apollo = new models.Apollos({
@@ -43,17 +48,48 @@ apollosRouter.post("/", async (request, response, next) => {
         inputUrl: body.inputUrl,
         shortUrl: shortenLink(base, id),
         createDate: new Date(),
-        user: user._id,
+        user: null,
       });
       apollo
         .save()
         .then((savedApollo) => savedApollo.toJSON())
         .then((savedAndFormattedApollo) => {
-          response.json(savedAndFormattedApollo);
+          return response.json(savedAndFormattedApollo);
         })
-        .catch((error) => next(error));
+        .catch((error) => {
+          return response.status(401).json(error.errors);
+        });
     }
-  });
+  } else {
+    const decodedToken: any = jwt.verify(token, SESSION_SECRET).valueOf();
+    if (!token || !decodedToken.user.id) {
+      return response.status(401).json({ error: "token missing or invalid" });
+    }
+
+    models.User.findById(decodedToken.user.id).then((user) => {
+      if (!body.inputUrl) {
+        return response.status(400).json({ error: "url missing" });
+      } else {
+        const id = nanoid(5);
+        const apollo = new models.Apollos({
+          id: id,
+          inputUrl: body.inputUrl,
+          shortUrl: shortenLink(base, id),
+          createDate: new Date(),
+          user: user._id,
+        });
+        apollo
+          .save()
+          .then((savedApollo) => savedApollo.toJSON())
+          .then((savedAndFormattedApollo) => {
+            return response.json(savedAndFormattedApollo);
+          })
+          .catch((error) => {
+            return response.status(401).json(error.errors);
+          });
+      }
+    });
+  }
 });
 
 export { apollosRouter };

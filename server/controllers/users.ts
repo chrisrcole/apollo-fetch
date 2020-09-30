@@ -77,11 +77,14 @@ usersRouter.post(
 );
 
 usersRouter.get("/", async (request, response) => {
-  const users = await models.User.find({}).populate("apollos", {
-    inputUrl: 1,
-    shortUrl: 1,
-  });
-  response.json(users.map((u) => u.toJSON()));
+  await models.User.find({})
+    .populate("apollos", {
+      inputUrl: 1,
+      shortUrl: 1,
+    })
+    .then((users) => {
+      response.json(users.map((u) => u.toJSON()));
+    });
 });
 
 export { usersRouter };

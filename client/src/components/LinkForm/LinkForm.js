@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
-import { validURL } from "../../services";
-import apolloService from "../../services/apollo";
+import { validURL, apolloService } from "../../services";
 
 export const LinkForm = (props) => {
   const { apollos, setApollos } = props;
