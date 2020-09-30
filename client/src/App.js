@@ -7,6 +7,7 @@ import { LinkList } from "./components/LinkList";
 
 function App() {
   const [apollos, setApollos] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     apolloService.getAll().then((initialApollos) => {
