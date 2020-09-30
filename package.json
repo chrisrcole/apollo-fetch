@@ -9,15 +9,15 @@
   "author": "Chris Cole",
   "license": "MIT",
   "scripts": {
-    "postinstall": "npm run build:ui",
+    "postinstall": "npm run build:client",
     "build": "npm run build-ts",
     "build-ts": "tsc",
-    "build:ui": "rimraf build && cd client && npm run build --prod && ncp build ../build",
+    "build:client": "cd client && npm run build --prod",
     "deploy": "git push heroku main",
     "logs:prod": "heroku logs --tail",
     "dev-server": "nodemon server/server.ts",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Server,Client\" -c \"green.bold,cyan.bold\" \"npm run dev-server\" \"cd client && npm run start\"",
-    "serve": "node dist/server.js",
+    "serve": "npm run build && node dist/server.js",
     "start": "npm run serve"
   },
   "dependencies": {

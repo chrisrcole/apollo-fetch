@@ -39,9 +39,8 @@ app.use(
     }),
   })
 );
-console.log(path.join(__dirname, "/build"));
 app.use(
-  express.static("build", {
+  express.static("./client/build", {
     maxAge: 31557600000,
   })
 );
@@ -72,6 +71,10 @@ app.post("/api/apollos", (request, response, next) => {
       })
       .catch((error) => next(error));
   }
+});
+
+app.get("/", (request, response, next) => {
+  response.send("The index page");
 });
 
 app.get("/:id", (request, response, next) => {
