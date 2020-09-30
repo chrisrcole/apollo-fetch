@@ -52,6 +52,7 @@ app.get("/api/apollos", (request, response) => {
 });
 app.post("/api/apollos", (request, response, next) => {
   const body = request.body;
+  const base = request.protocol + "://" + request.get("host");
   if (!body.inputUrl) {
     response.status(400).json({ error: "url missing" });
   } else {
@@ -59,7 +60,7 @@ app.post("/api/apollos", (request, response, next) => {
     const apollo = new Apollo({
       id: id,
       inputUrl: body.inputUrl,
-      shortUrl: shortenLink(id),
+      shortUrl: shortenLink(base, id),
       createDate: new Date(),
     });
     apollo
