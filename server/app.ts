@@ -5,6 +5,8 @@ import bodyParser from "body-parser";
 import mongo from "connect-mongo";
 import cors from "cors";
 import path from "path";
+import morgan from "morgan";
+
 import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 
 import { shortenLink } from "./services";
@@ -24,6 +26,8 @@ app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(morgan("dev"));
 app.use(
   session({
     resave: true,
