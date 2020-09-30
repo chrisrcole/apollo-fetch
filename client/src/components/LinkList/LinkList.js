@@ -15,7 +15,11 @@ export const LinkList = (props) => {
             <tr key={apollo.id}>
               <td>{apollo.inputUrl}</td>
               <td>
-                <a href={apollo.shortUrl} target="_blank">
+                <a
+                  href={apollo.shortUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   {apollo.shortUrl}
                 </a>
               </td>
