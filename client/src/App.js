@@ -5,8 +5,8 @@ import apolloService from "./services/apollo";
 import { LinkForm } from "./components/LinkForm";
 import { LinkList } from "./components/LinkList";
 
-function App(props) {
-  const [apollos, setApollos] = useState(props.apollos);
+function App() {
+  const [apollos, setApollos] = useState([]);
 
   useEffect(() => {
     apolloService.getAll().then((initialApollos) => {
