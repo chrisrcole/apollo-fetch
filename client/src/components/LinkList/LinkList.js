@@ -14,7 +14,11 @@ export const LinkList = (props) => {
           {apollos.map((apollo) => (
             <tr key={apollo.id}>
               <td>{apollo.inputUrl}</td>
-              <td>{apollo.shortUrl}</td>
+              <td>
+                <a href={apollo.shortUrl} target="_blank">
+                  {apollo.shortUrl}
+                </a>
+              </td>
               <td>{apollo.createDate.toString()}</td>
             </tr>
           ))}
