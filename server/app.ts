@@ -9,7 +9,7 @@ import morgan from "morgan";
 
 import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 
-import { shortenLink } from "./services";
+import { nanoid, shortenLink } from "./services";
 
 const MongoStore = mongo(session);
 
@@ -55,9 +55,11 @@ app.post("/api/apollos", (request, response, next) => {
   if (!body.inputUrl) {
     response.status(400).json({ error: "url missing" });
   } else {
+    const id = nanoid(5);
     const apollo = new Apollo({
+      id: id,
       inputUrl: body.inputUrl,
-      shortUrl: shortenLink(),
+      shortUrl: shortenLink(id),
       createDate: new Date(),
     });
     apollo
@@ -68,6 +70,18 @@ app.post("/api/apollos", (request, response, next) => {
       })
       .catch((error) => next(error));
   }
+});
+
+app.get("/:id", (request, response, next) => {
+  Apollo.findOne({ id: request.params.id })
+    .then((apollo) => {
+      if (apollo) {
+        response.redirect(302, apollo.toJSON().inputUrl);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => next(error));
 });
 
 export default app;

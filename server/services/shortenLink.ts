@@ -1,7 +1,5 @@
-import { nanoid } from "./nanoid";
-
 const base = "http://localhost:5000/";
 
-export const shortenLink = () => {
-  return base + nanoid(5);
+export const shortenLink = (id: string) => {
+  return base + id;
 };
