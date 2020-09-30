@@ -9,17 +9,18 @@ function App(props) {
   const [apollos, setApollos] = useState(props.apollos);
 
   useEffect(() => {
-    console.log("effect");
     apolloService.getAll().then((initialApollos) => {
-      console.log(initialApollos);
       setApollos(initialApollos);
     });
   }, []);
 
+  const showApollos =
+    apollos.length > 0 ? <LinkList apollos={apollos} /> : <></>;
+
   return (
     <div>
       <LinkForm apollos={apollos} setApollos={setApollos} />
-      <LinkList apollos={apollos} />
+      {showApollos}
     </div>
   );
 }
