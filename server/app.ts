@@ -53,7 +53,7 @@ app.post("/", (request, response, next) => {
   } else {
     const apollo = new Apollo({
       inputUrl: body.inputUrl,
-      shortUrl: shortenLink(body.inputUrl),
+      shortUrl: shortenLink(),
       createDate: new Date(),
     });
     apollo
