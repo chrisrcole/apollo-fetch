@@ -59,14 +59,14 @@ app.use(
   })
 );
 app.use(
-  express.static("./client/build", {
+  express.static("../client/build", {
     maxAge: 31557600000
   })
 );
 
-app.get("/", (request, response) => {
-  response.send("The index page");
-});
+// app.get("/", (request, response) => {
+//   response.send("The index page");
+// });
 
 app.use("/api/users", controllers.usersRouter);
 app.use("/api/apollos", controllers.apollosRouter);
