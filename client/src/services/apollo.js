@@ -4,7 +4,11 @@ const baseUrl = "/api/apollos";
 let token = null;
 
 const setToken = (newToken) => {
-  token = `bearer ${newToken}`;
+  if (!newToken) {
+    token = null;
+  } else {
+    token = `bearer ${newToken}`;
+  }
 };
 
 const getAll = async () => {

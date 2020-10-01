@@ -20,27 +20,20 @@ function App() {
   }, []);
 
   useEffect(() => {
-    apolloService.getAll(user).then((initialApollos) => {
+    apolloService.getAll().then((initialApollos) => {
       setApollos(initialApollos);
     });
   }, []);
-
-  const logout = () => {
-    setUser(null);
-    window.localStorage.removeItem("loggedApolloappUser");
-  };
 
   const showApollos =
     apollos.length > 0 ? <LinkList apollos={apollos} /> : <></>;
 
   return (
     <div>
-      <LoginForm user={user} setUser={setUser} />
+      <LoginForm user={user} setUser={setUser} setApollos={setApollos} />
       {user !== null && (
         <>
-          <p>
-            {user.name} logged-in <button onClick={logout}>Logout</button>
-          </p>
+          <p>{user.name} logged-in</p>
         </>
       )}
       <br></br>

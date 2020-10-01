@@ -28,7 +28,7 @@ apollosRouter.get("/", async (request, response) => {
     await models.Apollos.find({
       $or: [{ user: decodedToken.user.id }, { user: null }],
     }).then((apollos) => {
-      response.json(apollos.map((apollo) => apollo.toJSON()));
+      return response.json(apollos.map((apollo) => apollo.toJSON()));
     });
   }
 });
