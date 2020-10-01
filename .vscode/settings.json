@@ -21,6 +21,5 @@
   },
   "typescript.referencesCodeLens.enabled": true,
   "appService.zipIgnorePattern": [".vscode{,/**}"],
-  "appService.deploySubpath": "",
-  "git.ignoreLimitWarning": true
+  "appService.deploySubpath": ""
 }
