@@ -24,7 +24,7 @@ if (!MONGODB_URI) {
     );
   } else {
     logger.error(
-      "No mongo connection string. Set MONGODB_URI_LOCAL environment variable."
+      "No mongo connection string. Set MONGODB_URI_DEV environment variable."
     );
   }
   process.exit(1);

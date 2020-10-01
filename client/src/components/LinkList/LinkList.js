@@ -7,7 +7,7 @@ export const LinkList = (props) => {
   const publicApollos = apollos.filter((apollo) => apollo.user === null);
   return (
     <>
-      {userApollos.length > 1 && (
+      {userApollos.length > 0 && (
         <table>
           <tbody>
             <tr>
@@ -35,30 +35,32 @@ export const LinkList = (props) => {
       )}
 
       <br></br>
-      <table>
-        <tbody>
-          <tr>
-            <th>Link</th>
-            <th>Shortened</th>
-            <th>Created</th>
-          </tr>
-          {publicApollos.map((apollo) => (
-            <tr key={apollo.id}>
-              <td>{apollo.inputUrl}</td>
-              <td>
-                <a
-                  href={apollo.shortUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {apollo.shortUrl}
-                </a>
-              </td>
-              <td>{apollo.createDate.toString()}</td>
+      {publicApollos.length > 0 && (
+        <table>
+          <tbody>
+            <tr>
+              <th>Link</th>
+              <th>Shortened</th>
+              <th>Created</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            {publicApollos.map((apollo) => (
+              <tr key={apollo.id}>
+                <td>{apollo.inputUrl}</td>
+                <td>
+                  <a
+                    href={apollo.shortUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {apollo.shortUrl}
+                  </a>
+                </td>
+                <td>{apollo.createDate.toString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </>
   );
 };
