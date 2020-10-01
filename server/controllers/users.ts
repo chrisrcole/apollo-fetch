@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import express, { Request, Response } from "express";
+import express from "express";
 import models from "../models";
 import { check, validationResult } from "express-validator";
 import normalize from "normalize-url";
@@ -21,9 +21,9 @@ usersRouter.post(
     check(
       "password",
       "Please enter a password with 6 or more characters"
-    ).isLength({ min: 6 })
+    ).isLength({ min: 6 }),
   ],
-  async (request: Request, response: Response) => {
+  async (request: any, response: any, next: any) => {
     const errors = validationResult(request);
     if (!errors.isEmpty()) {
       return response.status(400).json({ errors: errors.array() });
@@ -34,7 +34,7 @@ usersRouter.post(
       gravatar.url(email, {
         s: "200",
         r: "pg",
-        d: "mm"
+        d: "mm",
       }),
       { forceHttps: true }
     );
@@ -47,7 +47,7 @@ usersRouter.post(
       name,
       email,
       avatar,
-      password: hashPassword
+      password: hashPassword,
     });
 
     user
@@ -56,15 +56,15 @@ usersRouter.post(
         const payload = {
           user: {
             email: user.email,
-            id: user._id
-          }
+            id: user._id,
+          },
         };
         const token = jwt.sign(payload, SESSION_SECRET);
 
         response.status(200).send({
           token,
           email: user.email,
-          name: user.name
+          name: user.name,
         });
       })
       .catch((error) => {
@@ -76,14 +76,11 @@ usersRouter.post(
   }
 );
 
-// @route    GET api/users
-// @desc     Get users
-// @access   Public
 usersRouter.get("/", async (request, response) => {
   await models.User.find({})
     .populate("apollos", {
       inputUrl: 1,
-      shortUrl: 1
+      shortUrl: 1,
     })
     .then((users) => {
       response.json(users.map((u) => u.toJSON()));
