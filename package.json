@@ -14,7 +14,6 @@
   "description": "Scalable, simple URL shortener with user accounts and more!",
   "scripts": {
     "deploy": "git push heroku main",
-    "heroku-postbuild": "tsc --project=./server/tsconfig.json",
     "logs:prod": "heroku logs --tail",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Server,Client\" -c \"green.bold,cyan.bold\" \"cd server && yarn dev-server\" \"cd client && yarn start\"",
     "build:server": "cd server && yarn && npm run build",
