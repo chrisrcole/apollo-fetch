@@ -28,6 +28,7 @@
     "mongoose-unique-validator": "^2.0.3",
     "morgan": "^1.10.0",
     "normalize-url": "^5.2.1",
+    "passport-local": "^1.0.0",
     "typescript": "^4.0.2",
     "winston": "^3.3.3"
   },
@@ -48,6 +49,7 @@
     "@types/mongoose-unique-validator": "^1.0.4",
     "@types/morgan": "^1.9.1",
     "@types/normalize-url": "^4.2.0",
+    "@types/passport-local": "^1.0.33",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^4.3.0",
     "@typescript-eslint/parser": "^4.3.0",

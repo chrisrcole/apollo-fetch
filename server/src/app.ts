@@ -2,18 +2,24 @@ import express from "express";
 import compression from "compression"; // compresses requests
 import session from "express-session";
 import bodyParser from "body-parser";
+import lusca from "lusca";
 import mongo from "connect-mongo";
+import flash from "express-flash";
 import mongoose from "mongoose";
+import passport from "passport";
 import bluebird from "bluebird";
-import cors from "cors";
-import morgan from "morgan";
-
 import { MONGODB_URI, SESSION_SECRET } from "./util/secrets";
 
-import models from "./models";
-import controllers from "./controllers";
-
 const MongoStore = mongo(session);
+
+// Controllers (route handlers)
+import * as homeController from "./controllers/home";
+// import * as userController from "./controllers/user";
+// import * as apiController from "./controllers/api";
+// import * as contactController from "./controllers/contact";
+
+// // API keys and Passport configuration
+// import * as passportConfig from "./config/passport";
 
 // Create Express server
 const app = express();
@@ -30,7 +36,6 @@ mongoose
   })
   .then(() => {
     /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
-    console.log("MongoDB connected.");
   })
   .catch((err) => {
     console.log(
@@ -41,12 +46,9 @@ mongoose
 
 // Express configuration
 app.set("port", process.env.PORT || 5000);
-app.use(cors());
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(morgan("dev"));
 app.use(
   session({
     resave: true,
@@ -58,30 +60,39 @@ app.use(
     })
   })
 );
-app.use(
-  express.static("../client/build", {
-    maxAge: 31557600000
-  })
-);
-
-// app.get("/", (request, response) => {
-//   response.send("The index page");
-// });
-
-app.use("/api/users", controllers.usersRouter);
-app.use("/api/apollos", controllers.apollosRouter);
-app.use("/api/login", controllers.loginRouter);
-
-app.get("/:id", (request, response, next) => {
-  models.Apollos.findOne({ id: request.params.id })
-    .then((apollo) => {
-      if (apollo) {
-        response.redirect(302, apollo.toJSON().inputUrl);
-      } else {
-        response.status(404).end();
-      }
-    })
-    .catch((error) => next(error));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+app.use(lusca.xframe("SAMEORIGIN"));
+app.use(lusca.xssProtection(true));
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
 });
+app.use((req, res, next) => {
+  // After successful login, redirect back to the intended page
+  if (
+    !req.user &&
+    req.path !== "/login" &&
+    req.path !== "/signup" &&
+    !req.path.match(/^\/auth/) &&
+    !req.path.match(/\./)
+  ) {
+    req.session.returnTo = req.path;
+  } else if (req.user && req.path == "/account") {
+    req.session.returnTo = req.path;
+  }
+  next();
+});
+
+app.use(express.static("../client/build", { maxAge: 31557600000 }));
+
+/**
+ * Primary app routes.
+ */
+app.get("/", homeController.index);
+// app.get("/login", userController.getLogin);
+// app.post("/login", userController.postLogin);
+// app.get("/logout", userController.logout);
 
 export default app;
