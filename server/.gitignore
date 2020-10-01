@@ -12,8 +12,7 @@ node_modules
 Thumbs.db
 
 # Ignore built ts files and build
-dist/**/*
-build
+dist
 
 # ignore yarn.lock
 yarn.lock

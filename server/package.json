@@ -24,7 +24,7 @@
     "dev": "concurrently -k -p \"[{name}]\" -n \"Server,Client\" -c \"green.bold,cyan.bold\" \"yarn dev-server\" \"cd ../client && yarn start\"",
     "serve": "node dist/server.js",
     "start": "yarn serve",
-    "prettier-format": "prettier --config .prettierrc.yml './src/**/*.ts' --write"
+    "prettier-format": "prettier --config .prettierrc.yml \"./src/**/*.ts\" --write"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
