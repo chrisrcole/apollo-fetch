@@ -16,9 +16,9 @@
     "deploy": "git push heroku main",
     "logs:prod": "heroku logs --tail",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Server,Client\" -c \"green.bold,cyan.bold\" \"cd server && yarn dev-server\" \"cd client && yarn start\"",
-    "build:server": "cd server && yarn build",
-    "build:client": "cd client && yarn build",
-    "build": "concurrently -k -p \"[{name}]\" -n \"Server,Client\" -c \"green.bold,cyan.bold\" \"yarn build:server\" \"yarn build:client\"",
+    "build:server": "cd server && yarn && yarn build",
+    "build:client": "cd client && yarn && yarn build",
+    "build": "yarn build:client && yarn build:server",
     "start": "cd server && yarn serve"
   },
   "devDependencies": {
