@@ -1,13 +1,6 @@
 {
   "name": "apollo-fetch-server",
   "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/cccole3/apollo-fetch"
-  },
-  "author": "Chris Cole",
-  "license": "MIT",
-  "description": "",
   "scripts": {
     "dev-server": "nodemon src/server.ts",
     "lint": "tsc --noEmit && eslint \"./src/**/*.{js,ts}\" --quiet --fix",

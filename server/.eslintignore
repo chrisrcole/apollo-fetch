@@ -4,6 +4,3 @@ dist/*
 coverage/*
 # data definition files
 **/*.d.ts
-# build/client
-build
-client
