@@ -11,15 +11,15 @@
   },
   "author": "Chris Cole",
   "license": "MIT",
-  "description": "Scalable, simple URL shortener with user accounts and more!",
+  "description": "",
   "scripts": {
     "deploy": "git push heroku main",
     "logs:prod": "heroku logs --tail",
     "dev": "concurrently -k -p \"[{name}]\" -n \"Server,Client\" -c \"green.bold,cyan.bold\" \"cd server && yarn dev-server\" \"cd client && yarn start\"",
-    "build:server": "cd server && yarn && npm run build --prod",
-    "build:client": "cd client && yarn && npm run build --prod",
-    "build": "yarn build:client",
-    "start": "cd client && yarn start"
+    "build:server": "cd server && yarn && yarn build",
+    "build:client": "cd client && yarn && yarn build",
+    "build": "yarn build:client && yarn build:server",
+    "start": "cd server && yarn serve"
   },
   "devDependencies": {
     "concurrently": "^5.3.0"
