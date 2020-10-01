@@ -1,6 +1,10 @@
 {
   "name": "apollo-fetch-server",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.18.2",
+    "yarn": "1.22.4"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/cccole3/apollo-fetch"
@@ -12,7 +16,7 @@
     "dev-server": "nodemon src/server.ts",
     "lint": "tsc --noEmit && eslint \"./src/**/*.{js,ts}\" --quiet --fix",
     "prettier-format": "prettier --config .prettierrc.yml \"./src/**/*.{js,ts}\" --write",
-    "build": "yarn build-ts",
+    "build": "yarn lint && yarn build-ts",
     "build-ts": "tsc",
     "serve": "node dist/server.js"
   },
