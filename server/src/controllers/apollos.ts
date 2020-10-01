@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request } from "express";
 import models from "../models";
 import jwt from "jsonwebtoken";
 
@@ -6,9 +6,14 @@ import { SESSION_SECRET } from "../util/secrets";
 
 import { nanoid, shortenLink } from "../services";
 
+interface Token {
+  user: { email: string; id: string };
+  iat: string;
+}
+
 const apollosRouter = express.Router();
 
-const getTokenFrom = (request: any) => {
+const getTokenFrom = (request: Request) => {
   const authorization = request.get("authorization");
   if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
     return authorization.substring(7);
@@ -23,17 +28,17 @@ apollosRouter.get("/", async (request, response) => {
       return response.json(apollos.map((apollo) => apollo.toJSON()));
     });
   } else {
-    const decodedToken: any = jwt.verify(token, SESSION_SECRET).valueOf();
+    const decodedToken = jwt.verify(token, SESSION_SECRET).valueOf() as Token;
 
     await models.Apollos.find({
-      $or: [{ user: decodedToken.user.id }, { user: null }],
+      $or: [{ user: decodedToken.user.id }, { user: null }]
     }).then((apollos) => {
       return response.json(apollos.map((apollo) => apollo.toJSON()));
     });
   }
 });
 
-apollosRouter.post("/", async (request, response, next) => {
+apollosRouter.post("/", async (request, response) => {
   const body = request.body;
   const base = request.protocol + "://" + request.get("host");
 
@@ -48,7 +53,7 @@ apollosRouter.post("/", async (request, response, next) => {
         inputUrl: body.inputUrl,
         shortUrl: shortenLink(base, id),
         createDate: new Date(),
-        user: null,
+        user: null
       });
       apollo
         .save()
@@ -61,7 +66,7 @@ apollosRouter.post("/", async (request, response, next) => {
         });
     }
   } else {
-    const decodedToken: any = jwt.verify(token, SESSION_SECRET).valueOf();
+    const decodedToken = jwt.verify(token, SESSION_SECRET).valueOf() as Token;
     if (!token || !decodedToken.user.id) {
       return response.status(401).json({ error: "token missing or invalid" });
     }
@@ -76,7 +81,7 @@ apollosRouter.post("/", async (request, response, next) => {
           inputUrl: body.inputUrl,
           shortUrl: shortenLink(base, id),
           createDate: new Date(),
-          user: user._id,
+          user: user._id
         });
         apollo
           .save()

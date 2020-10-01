@@ -16,15 +16,15 @@ loginRouter.post("/", async (request, response) => {
 
     if (!(user && passwordCorrect)) {
       return response.status(401).json({
-        error: "invalid username or password",
+        error: "invalid username or password"
       });
     }
 
     const payload = {
       user: {
         email: user.email,
-        id: user._id,
-      },
+        id: user._id
+      }
     };
 
     const token = jwt.sign(payload, SESSION_SECRET);

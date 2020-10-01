@@ -13,13 +13,13 @@ const random = (bytes: number) => {
   return crypto.randomFillSync(buffer);
 };
 
-export const nanoid = (size = 21) => {
-  let mask = (2 << (31 - Math.clz32((urlAlphabet.length - 1) | 1))) - 1;
-  let step = Math.ceil((1.6 * mask * size) / urlAlphabet.length);
+export const nanoid = (size = 21): string => {
+  const mask = (2 << (31 - Math.clz32((urlAlphabet.length - 1) | 1))) - 1;
+  const step = Math.ceil((1.6 * mask * size) / urlAlphabet.length);
 
   let id = "";
   while (true) {
-    let bytes = random(step);
+    const bytes = random(step);
     let i = step;
     while (i--) {
       id += urlAlphabet[bytes[i] & mask] || "";

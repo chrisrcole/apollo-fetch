@@ -12,24 +12,24 @@ export interface IUser extends mongoose.Document {
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   avatar: {
-    type: String,
+    type: String
   },
   createDate: {
     type: Date,
-    default: Date.now,
-  },
+    default: Date.now
+  }
 });
 
 userSchema.plugin(uniqueValidator);

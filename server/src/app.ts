@@ -26,7 +26,7 @@ mongoose
   .connect(mongoUrl, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true,
+    useUnifiedTopology: true
   })
   .then(() => {
     /** ready to use. The `mongoose.connect()` promise resolves to undefined. */
@@ -54,17 +54,17 @@ app.use(
     secret: SESSION_SECRET,
     store: new MongoStore({
       url: mongoUrl,
-      autoReconnect: true,
-    }),
+      autoReconnect: true
+    })
   })
 );
 app.use(
   express.static("./client/build", {
-    maxAge: 31557600000,
+    maxAge: 31557600000
   })
 );
 
-app.get("/", (request, response, next) => {
+app.get("/", (request, response) => {
   response.send("The index page");
 });
 
